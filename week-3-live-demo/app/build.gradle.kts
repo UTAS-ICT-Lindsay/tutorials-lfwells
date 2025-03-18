@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "au.edu.utas.lfwells.week3app"
+    namespace = "au.edu.utas.lfwells.week3livedemo"
     compileSdk = 35
 
     buildFeatures {
@@ -12,7 +12,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "au.edu.utas.lfwells.week3app"
+        applicationId = "au.edu.utas.lfwells.week3livedemo"
         minSdk = 24
         targetSdk = 34
         versionCode = 1

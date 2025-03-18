@@ -7,17 +7,21 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import au.edu.utas.lfwells.week3app.databinding.ActivityMainBinding
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity()
+{
+    private lateinit var ui: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
+        ui = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(ui.root)
 
-        setContentView(R.layout.activity_main)
-
-        val myClickableButton = findViewById<Button>(R.id.myButton)
+        //val myClickableButton = findViewById<Button>(R.id.myButton)
+        val myClickableButton = ui.myButton;
         myClickableButton.setOnClickListener {
             myClickableButton.text = "Clicked!"
             Log.d("MY_TAG", "Button clicked!")
