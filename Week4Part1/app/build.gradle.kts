@@ -7,6 +7,10 @@ android {
     namespace = "au.edu.utas.lfwells.week4part1"
     compileSdk = 35
 
+    buildFeatures {
+        viewBinding = true
+    }
+
     defaultConfig {
         applicationId = "au.edu.utas.lfwells.week4part1"
         minSdk = 24
