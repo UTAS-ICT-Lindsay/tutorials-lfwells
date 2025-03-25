@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import au.edu.utas.lfwells.week4part1.databinding.ActivityMainBinding
 import au.edu.utas.lfwells.week4part1.databinding.DumbLayoutBinding
 import au.edu.utas.lfwells.week4part1.databinding.MyListItemBinding
+import au.edu.utas.lfwells.week4part1.databinding.NotSmortItemBinding
 
 class Person (
     var name : String,
@@ -31,6 +32,9 @@ val items = mutableListOf(
 
 class MainActivity : AppCompatActivity()
 {
+    val SMORT_PERSON_VIEW = 0
+    val NOT_SMORT_PERSON_VIEW = 1
+
     private lateinit var ui : DumbLayoutBinding
 
     override fun onCreate(savedInstanceState: Bundle?)
@@ -52,30 +56,60 @@ class MainActivity : AppCompatActivity()
     }
 
     inner class PersonHolder(var ui: MyListItemBinding) : RecyclerView.ViewHolder(ui.root) {}
-    inner class PersonAdapter(private val people: MutableList<Person>) : RecyclerView.Adapter<PersonHolder>(){
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PersonHolder {
+    inner class NotSmartPersonHolder(var ui: NotSmortItemBinding) : RecyclerView.ViewHolder(ui.root) {}
+
+    inner class PersonAdapter(private val people: MutableList<Person>) : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
             Log.d("PersonAdapter", "onCreateViewHolder")
             //the ui list item gets created here
-            val ui = MyListItemBinding.inflate(layoutInflater, parent, false)
-            return PersonHolder(ui)
+            if (viewType == SMORT_PERSON_VIEW) {
+                val ui = MyListItemBinding.inflate(layoutInflater, parent, false)
+                return PersonHolder(ui)
+            }
+            else {
+                val ui = NotSmortItemBinding.inflate(layoutInflater, parent, false)
+                return NotSmartPersonHolder(ui)
+            }
+        }
+
+        override fun getItemViewType(position: Int): Int {
+            val thisPerson = people[position]
+            if (thisPerson.smort) {
+                return SMORT_PERSON_VIEW
+            } else {
+                return NOT_SMORT_PERSON_VIEW
+            }
         }
 
         override fun getItemCount(): Int {
             return people.size
         }
 
-        override fun onBindViewHolder(holder: PersonHolder, position: Int) {
+        override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+            //holder might be a PersonHolder or a NotSmartPersonHolder
             Log.d("PersonAdapter", "onBindViewHolder")
-            //and then it gets used here
-            val thisPerson = people[position]
-            holder.ui.txtName.text = thisPerson.name
-            holder.ui.txtStudentID.text = thisPerson.studentID.toString()
 
-            holder.ui.imageButton2.setOnClickListener {
-                items.removeAt(position)
-                //people.removeAt(position)
-                //notifyDataSetChanged()
-                notifyItemRemoved(position)
+
+            val thisPerson = people[position]
+            if (getItemViewType(position) == SMORT_PERSON_VIEW) {
+                //and then it gets used here
+                val personHolder = holder as PersonHolder
+                personHolder.ui.txtName.text = thisPerson.name
+                personHolder.ui.txtStudentID.text = thisPerson.studentID.toString()
+
+                personHolder.ui.imageButton2.setOnClickListener {
+                    items.removeAt(position)
+                    //people.removeAt(position)
+                    //notifyDataSetChanged()
+                    notifyItemRemoved(position)
+                }
+            }
+            else if (getItemViewType(position) == NOT_SMORT_PERSON_VIEW)
+            {
+                //do something else
+                val notSmartPersonHolder = holder as NotSmartPersonHolder
+                notSmartPersonHolder.ui.txtName.text = thisPerson.name
+                //notSmartPersonHolder.ui.txtStudentID doesnt exist
             }
 
             holder.itemView.setOnClickListener {
