@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import au.edu.utas.kit305.tutorial05.databinding.ActivityMainBinding
+import au.edu.utas.kit305.tutorial05.databinding.ActivityMovieDetailsBinding
 import au.edu.utas.kit305.tutorial05.databinding.MyListItemBinding
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.toObject
@@ -88,9 +89,38 @@ class MainActivity : AppCompatActivity()
                 //(ui.myList.adapter as MovieAdapter).notifyItemRangeInserted(0, items.size)
             }
 
+        //the interesting way, using an AlertDialog
+        val dialogBuilder = android.app.AlertDialog.Builder(this)
+        val dialogUI = ActivityMovieDetailsBinding.inflate(layoutInflater)
+        dialogBuilder.setView(dialogUI.root)
+
         ui.btnAdd.setOnClickListener {
-            val i = Intent(this, MovieDetails::class.java)
-            startActivity(i)
+            //the easy way, reusing the whole MovieDetails class
+            /*val i = Intent(this, MovieDetails::class.java)
+            startActivity(i)*/
+
+            val dialog = dialogBuilder.show()
+            dialogUI.btnSave.setOnClickListener {
+                //get the user input
+                val movieObject = Movie(
+                    title = dialogUI.txtTitle.text.toString(),
+                    year = dialogUI.txtYear.text.toString().toInt(), //good code would check this is really an int
+                    duration = dialogUI.txtDuration.text.toString().toFloat() //good code would check this is really a float
+                )
+
+                //add the movie to the database
+                moviesCollectionRef
+                    .add(movieObject)
+                    .addOnSuccessListener { doc ->
+                        Log.d(FIREBASE_TAG, "Document created with id ${doc.id}")
+                        movieObject.id = doc.id
+                        items.add(movieObject)
+                        dialog.dismiss()
+                    }
+                    .addOnFailureListener {
+                        Log.e(FIREBASE_TAG, "Error writing document", it)
+                    }
+            }
         }
     }
 
