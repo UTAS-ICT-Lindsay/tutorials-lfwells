@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <TextView
+        android:id="@+id/lblEnteredText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Your name here"
+        android:textAllCaps="false"
+        android:textSize="36sp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/btnChar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Charmander" />
+
+    <Button
+        android:id="@+id/btnBulb"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Bulbasaur" />
+
+    <Button
+        android:id="@+id/btnSquirtle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Squritler" />
+
+    <Button
+        android:id="@+id/btnCancel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Cancel" />
+</LinearLayout>
