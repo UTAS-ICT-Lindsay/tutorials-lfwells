@@ -4,6 +4,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.util.Log
+import android.view.View
+import android.widget.Adapter
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import au.edu.utas.kit305.tutorial05.databinding.ActivityMovieDetailsBinding
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -14,6 +18,24 @@ class MovieDetails : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         ui = ActivityMovieDetailsBinding.inflate(layoutInflater)
         setContentView(ui.root)
+
+
+        //spinner stuff
+        ui.mySpinner.adapter = ArrayAdapter.createFromResource(
+            this,
+            R.array.movie_directors,
+            android.R.layout.simple_spinner_item
+        )
+        ui.mySpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(adapter: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                // An item was selected. You can retrieve the selected item using
+                Log.d("SPINNER", adapter?.getItemAtPosition(position).toString())
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                // Another interface callback
+            }
+        }
 
 
         val db = Firebase.firestore

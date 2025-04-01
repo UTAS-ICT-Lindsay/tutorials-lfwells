@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="movie_titles">
+        <item>Movie 1</item>
+        <item>Movie 2</item>
+        <item>Movie 3</item>
+        <item>Movie 4</item>
+        <item>Movie 5</item>
+    </string-array>
+    <string-array name="movie_years">
+        <item>2010</item>
+        <item>2011</item>
+        <item>2012</item>
+        <item>2013</item>
+        <item>2014</item>
+    </string-array>
+    <string-array name="movie_durations">
+        <item>120</item>
+        <item>130</item>
+        <item>140</item>
+        <item>150</item>
+        <item>160</item>
+    </string-array>
+    <string-array name="movie_descriptions">
+        <item>Movie 1 Description</item>
+        <item>Movie 2 Description</item>
+        <item>Movie 3 Description</item>
+        <item>Movie 4 Description</item>
+        <item>Movie 5 Description</item>
+    </string-array>
+    <string-array name="movie_directors">
+        <item>Director 1</item>
+        <item>Director 2</item>
+        <item>Director 3</item>
+        <item>Director 4</item>
+        <item>Director 5</item>
+    </string-array>
+    <string-array name="movie_actors">
+        <item>Actor 1</item>
+        <item>Actor 2</item>
+        <item>Actor 3</item>
+        <item>Actor 4</item>
+        <item>Actor 5</item>
+    </string-array>
+    <string-array name="movie_ratings">
+        <item>5</item>
+        <item>4</item>
+        <item>3</item>
+        <item>2</item>
+        <item>1</item>
+    </string-array>
+</resources>
