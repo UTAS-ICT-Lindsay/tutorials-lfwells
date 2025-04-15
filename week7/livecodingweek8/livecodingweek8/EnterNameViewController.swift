@@ -7,8 +7,10 @@
 
 import UIKit
 
-class EnterNameViewController: UIViewController {
-
+class EnterNameViewController: UIViewController, DataTransferDelegate
+{
+    @IBOutlet weak var enterNameField: UITextField!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -29,6 +31,7 @@ class EnterNameViewController: UIViewController {
         {
             if let nextScreen = segue.destination as? DisplayNameViewController
             {
+                nextScreen.goingBackDelegate = self //I will be your going back delegate sir!
                 nextScreen.displayName = (sender as? UITextField)?.text ?? "Anonymous"
                 
                 //this will crash because its the inbetween
@@ -37,5 +40,11 @@ class EnterNameViewController: UIViewController {
         }
     }
     
+    
+    //implement the delegate pattern
+    func receiveData(_ message: String) {
+        print(message)
+        enterNameField.text = (enterNameField.text ?? "") + message
+    }
 }
 

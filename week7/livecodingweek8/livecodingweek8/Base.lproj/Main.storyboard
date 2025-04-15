@@ -53,6 +53,7 @@
                         <barButtonItem key="backBarButtonItem" title="WHAT" id="aHJ-0I-H6L"/>
                     </navigationItem>
                     <connections>
+                        <outlet property="enterNameField" destination="MUH-4X-JWk" id="xYj-4K-jqd"/>
                         <segue destination="dMy-K2-po3" kind="show" identifier="enteredNameSegue" id="fjl-p2-iBF"/>
                     </connections>
                 </viewController>
@@ -74,6 +75,33 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RTB-e6-8RT">
+                                <rect key="frame" x="81" y="313" width="69" height="35"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Frodo"/>
+                                <connections>
+                                    <action selector="characterButtonPressed:" destination="dMy-K2-po3" eventType="touchUpInside" id="VG2-L6-6f5"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8DQ-j9-Rcc">
+                                <rect key="frame" x="151" y="313" width="92" height="35"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Samwise"/>
+                                <connections>
+                                    <action selector="characterButtonPressed:" destination="dMy-K2-po3" eventType="touchUpInside" id="Vit-e4-y3f"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DLY-85-rar">
+                                <rect key="frame" x="261" y="313" width="55" height="35"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Bob"/>
+                                <connections>
+                                    <action selector="characterButtonPressed:" destination="dMy-K2-po3" eventType="touchUpInside" id="ZB5-B0-pse"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="gum-ID-NoV"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
