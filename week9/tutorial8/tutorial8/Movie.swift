@@ -14,5 +14,5 @@ public struct Movie : Codable
     var title:String
     var year:Int32
     var duration:Float
-    var teamAPlayers:[String] = ["lindsay", "bob"]
+    var teamAPlayers:[String]? = ["lindsay", "bob"]
 }
