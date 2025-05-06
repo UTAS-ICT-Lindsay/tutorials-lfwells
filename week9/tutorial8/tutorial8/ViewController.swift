@@ -13,8 +13,11 @@ import FirebaseFirestore
 class ViewController: UIViewController,
     UITableViewDelegate, UITableViewDataSource
 {
-    @IBOutlet weak var tableView: UITableView!
-    var movies = [Movie]()
+    @IBOutlet weak var tableViewTeamA: UITableView!
+    @IBOutlet weak var tableViewTeamB: UITableView!
+    
+    var moviesA = [Movie]()
+    var moviesB = [Movie]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,14 +28,18 @@ class ViewController: UIViewController,
         loadMovies()
     }
     func loadMovies() {
-        tableView.delegate = self // i want the job, assign it to me
-        tableView.dataSource = self
+        tableViewTeamA.delegate = self // i want the job, assign it to me
+        tableViewTeamA.dataSource = self
+        
+        tableViewTeamB.delegate = self // i want the job, assign it to me
+        tableViewTeamB.dataSource = self
         // Do any additional setup after loading the view.
         
         let db = Firestore.firestore()
         
         let movieCollection = db.collection("movies")
-        movieCollection.getDocuments() { (result, err) in
+        movieCollection.whereField("team", isEqualTo: "a")
+            .getDocuments() { (result, err) in
           //check for server error
           if let err = err
           {
@@ -40,7 +47,7 @@ class ViewController: UIViewController,
           }
           else
           {
-              self.movies.removeAll()
+              self.moviesA.removeAll()
               //loop through the results
               for document in result!.documents
               {
@@ -56,7 +63,7 @@ class ViewController: UIViewController,
                       //no problems (but could still be nil)
                       case .success(let movie):
                           print("Movie: \(movie)")
-                          self.movies.append(movie)
+                          self.moviesA.append(movie)
                           
                       case .failure(let error):
                           // A `Movie` value could not be initialized from the DocumentSnapshot.
@@ -64,7 +71,44 @@ class ViewController: UIViewController,
                   }
               }
               
-              self.tableView.reloadData()
+              self.tableViewTeamA.reloadData()
+          }
+        }
+        
+        movieCollection.whereField("team", isEqualTo: "b")
+            .getDocuments() { (result, err) in
+          //check for server error
+          if let err = err
+          {
+              print("Error getting documents: \(err)")
+          }
+          else
+          {
+              self.moviesB.removeAll()
+              //loop through the results
+              for document in result!.documents
+              {
+                  //attempt to convert to Movie object
+                  let conversionResult = Result
+                  {
+                      try document.data(as: Movie.self)
+                  }
+
+                  //check if conversionResult is success or failure (i.e. was an exception/error thrown?
+                  switch conversionResult
+                  {
+                      //no problems (but could still be nil)
+                      case .success(let movie):
+                          print("Movie: \(movie)")
+                          self.moviesB.append(movie)
+                          
+                      case .failure(let error):
+                          // A `Movie` value could not be initialized from the DocumentSnapshot.
+                          print("Error decoding movie: \(error)")
+                  }
+              }
+              
+              self.tableViewTeamB.reloadData()
           }
         }
         
@@ -74,14 +118,18 @@ class ViewController: UIViewController,
         1
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        movies.count
+        if tableView == self.tableViewTeamA {
+            return moviesA.count
+        } else {
+            return moviesB.count
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "myCell", for: indexPath)
 
             //get the movie for this row
-            let movie = movies[indexPath.row]
+            let movie = tableView == tableViewTeamA ? moviesA[indexPath.row] : moviesB[indexPath.row]
 
             //down-cast the cell from UITableViewCell to our cell class MovieUITableViewCell
             //note, this could fail, so we use an if let.
@@ -115,13 +163,13 @@ class ViewController: UIViewController,
               }
 
               //get the number of the row that was pressed (this could fail if the cell wasn’t in the table but we know it is)
-              guard let indexPath = tableView.indexPath(for: selectedMovieCell) else
+              guard let indexPath = tableViewTeamA.indexPath(for: selectedMovieCell) else
               {
                   fatalError("The selected cell is not being displayed by the table")
               }
 
               //work out which movie it is using the row number
-              let selectedMovie = movies[indexPath.row]
+              let selectedMovie = moviesA[indexPath.row]
 
               //send it to the details screen
               detailViewController.movie = selectedMovie
@@ -129,6 +177,48 @@ class ViewController: UIViewController,
         }
     }
 
+
+    @IBAction func deletePressed(_ sender: Any) {
+        self.tableViewTeamA.setEditing(true, animated: true)
+        self.tableViewTeamB.setEditing(true, animated: true)
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle:                                         UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath)
+    {
+        if editingStyle == .delete
+        {
+            if (tableView == self.tableViewTeamA) {
+                //Delete the row from the data source (example if we had a list of products
+                moviesA.remove(at: indexPath.row)
+                
+            //Delete the row from the table
+             tableViewTeamA.deleteRows(at: [indexPath], with: .fade)
+                
+               
+                //work out which movie it is using the row number
+                let db = Firestore.firestore()
+                let selectedMovie = moviesA[indexPath.row]
+                let movieCollection = db.collection("movies")
+                movieCollection.document(selectedMovie.documentID!).delete()
+         }
+        if (tableView == self.tableViewTeamB) {
+            // Delete the row from the data source (example if we had a list of products
+            moviesB.remove(at: indexPath.row)
+            
+                    //Delete the row from the table
+                    tableViewTeamB.deleteRows(at: [indexPath], with: .fade)
+        
+            
+            //work out which movie it is using the row number
+            let db = Firestore.firestore()
+            let selectedMovie = moviesB[indexPath.row]
+            let movieCollection = db.collection("movies")
+            movieCollection.document(selectedMovie.documentID!).delete()
+        }
+        
+
+        }
+    }
 
 }
 
