@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>API_KEY</key>
+	<string>AIzaSyDqcuNm65LzZFPSYc8vTkPj88Vmavx-Q2A</string>
+	<key>GCM_SENDER_ID</key>
+	<string>356040795289</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>au.edu.utas.kit305.tutorial8</string>
+	<key>PROJECT_ID</key>
+	<string>week5lectorial-54b18</string>
+	<key>STORAGE_BUCKET</key>
+	<string>week5lectorial-54b18.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:356040795289:ios:022254b428c0c4213ec408</string>
+</dict>
+</plist>
