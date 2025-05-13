@@ -52,41 +52,21 @@ class _MyHomePageState extends State<MyHomePage> {
     // than having to individually change instances of widgets.
     return Scaffold(
       appBar: buildAppBar(context),
-      body: buildBody(context),
-      floatingActionButton: buildFloatingActionButton(), // This trailing comma makes auto-formatting nicer for build methods.
+      body: buildBody(context),// This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 
-  FloatingActionButton buildFloatingActionButton() {
-    return FloatingActionButton(
-      onPressed: _incrementCounter,
-      tooltip: 'Increment',
-      child: const Icon(Icons.add),
-    );
-  }
 
   Center buildBody(BuildContext context) {
     return Center(
       // Center is a layout widget. It takes a single child and positions it
       // in the middle of the parent.
-      child: Container(
-        color: Colors.red,
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text(
-                '$_counter',
-                style: Theme.of(context).textTheme.headlineMedium,
-              ),
-              const Text(
-                'Yo momma so rich,',
-              ),
-            ],
-          ),
-        ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          ColouredColumn(initialValue: 6, color: Colors.red),
+          ColouredColumn(initialValue: 0, color: Colors.purple),
+        ],
       ),
     );
   }
@@ -100,6 +80,56 @@ class _MyHomePageState extends State<MyHomePage> {
       // Here we take the value from the MyHomePage object that was created by
       // the App.build method, and use it to set our appbar title.
       title: Text(widget.title),
+    );
+  }
+}
+
+class ColouredColumn extends StatefulWidget {
+  const ColouredColumn({
+    super.key,
+    required this.color,
+    required this.initialValue,
+  });
+
+  final Color color;
+  final int initialValue;
+
+  @override
+  State<ColouredColumn> createState() => _ColouredColumnState();
+}
+
+class _ColouredColumnState extends State<ColouredColumn>
+{
+  int _counter = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _counter = widget.initialValue;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: widget.color,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              '${_counter}',
+              style: Theme.of(context).textTheme.headlineMedium,
+            ),
+            ElevatedButton(onPressed: (){
+              setState(() {
+                _counter++;
+              });
+            }, child: Text("Plus"))
+          ],
+        ),
+      ),
     );
   }
 }
