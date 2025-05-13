@@ -5,7 +5,7 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key}) : super(key: key);
 
   // This widget is the root of your application.
   @override
@@ -13,93 +13,110 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+        primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Hello World'),
+      home: const FirstPage(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  //parameters here
-  final String title;
+class FirstPage extends StatefulWidget {
+  const FirstPage({Key? key}) : super(key: key);
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<FirstPage> createState() => _FirstPageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  //this is the state of the widget
-  int _counter = 0;
-  String _text = "Hello World";
+class _FirstPageState extends State<FirstPage> {
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
+  int selectedDropdownItem = 1;
+
+  Map<int, String> dropdownItems = {
+    1: "Frodo",
+    2: "Nida",
+    3: "Nidoran",
+  };
 
   @override
-  Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
+  Widget build(BuildContext context)
+  {
+    //higher order function way
+    /*var items = dropdownItems.entries.map((keyValuePair) {
+      return DropdownMenuItem(
+        value: keyValuePair.key,
+        child: Text(keyValuePair.value),
+      );
+    }).toList();*/
+
+    //normal for loop way
+    var items = <DropdownMenuItem<int>>[];
+    for (var key in dropdownItems.keys) {
+      items.add(
+        DropdownMenuItem(
+          value: key,
+          child: Text(dropdownItems[key]!),
+        ),
+      );
+    }
+
     return Scaffold(
-      appBar: buildAppBar(context),
-      body: buildBody(context),
-      floatingActionButton: buildFloatingActionButton(), // This trailing comma makes auto-formatting nicer for build methods.
-    );
-  }
+      appBar: AppBar(
+        title: const Text("My Flutter App"),
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
 
-  FloatingActionButton buildFloatingActionButton() {
-    return FloatingActionButton(
-      onPressed: _incrementCounter,
-      tooltip: 'Increment',
-      child: const Icon(Icons.add),
-    );
-  }
+            DropdownButton<int>(
+              value: selectedDropdownItem,
+                items: items,
+                onChanged: (newValue) {
+                  setState(() {
+                    selectedDropdownItem = newValue!;
+                  });
+                }
+            ),
+Text(selectedDropdownItem.toString()),
+            ElevatedButton.icon(
+              icon: const Icon(Icons.add),
+              label: const Text("Save"),
+              onPressed: () =>
+              {
+                //Navigator.pushNamed(context, "/products/9001"),
 
-  Center buildBody(BuildContext context) {
-    return Center(
-      // Center is a layout widget. It takes a single child and positions it
-      // in the middle of the parent.
-      child: Container(
-        color: Colors.red,
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text(
-                '$_counter',
-                style: Theme.of(context).textTheme.headlineMedium,
-              ),
-              const Text(
-                'Yo momma so rich,',
-              ),
-            ],
-          ),
+                Navigator.push(context, MaterialPageRoute(
+                    builder:(context) => SecondPage(name:dropdownItems[selectedDropdownItem]!)
+                ))
+              },
+            ),
+          ],
         ),
       ),
     );
   }
+}
 
-  AppBar buildAppBar(BuildContext context) {
-    return AppBar(
-      // TRY THIS: Try changing the color here to a specific color (to
-      // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-      // change color while the other colors stay the same.
-      backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-      // Here we take the value from the MyHomePage object that was created by
-      // the App.build method, and use it to set our appbar title.
-      title: Text(widget.title),
+class SecondPage extends StatelessWidget {
+
+  final String name;
+
+  const SecondPage({Key? key, required this.name}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Second Screen"),
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Text(name),
+      ),
     );
   }
 }
