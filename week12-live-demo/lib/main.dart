@@ -1,7 +1,11 @@
+import 'dart:io';
+
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:week12_live_demo/movie_details.dart';
 import 'package:week12_live_demo/movie_model.dart';
+import 'package:week12_live_demo/take_picture_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -37,10 +41,18 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatelessWidget {
+class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
 
   final String title;
+
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage>
+{
+  String? picturePath = null;
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +60,7 @@ class MyHomePage extends StatelessWidget {
       builder: (context, movieModel, _) {
         return Scaffold(
           appBar: AppBar(
-            title: Text(title),
+            title: Text(widget.title),
             backgroundColor: Theme.of(context).colorScheme.inversePrimary,
           ),
           body: Center(
@@ -56,7 +68,10 @@ class MyHomePage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
 
-                ElevatedButton(onPressed: () {}, child: Text("hello")),
+                if (picturePath == null)
+                  Text("Take a picture mate use that cool button below")
+                else
+                  Image.file(File(picturePath!)),
 
                 Expanded(
                   child: ListView.builder(
@@ -81,6 +96,26 @@ class MyHomePage extends StatelessWidget {
               ],
             ),
           ),
+          floatingActionButton: FloatingActionButton(onPressed: () async {
+            final cameras = await availableCameras();
+            // Get a specific camera from the list of available cameras.
+            final firstCamera = cameras.first;
+            var pathResult = await Navigator.push<String>(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => TakePictureScreen(
+                    // Pass the appropriate camera to the TakePictureScreen widget.
+                    camera: firstCamera
+                  )
+                ));
+
+            if (pathResult != null)
+            {
+              setState(() {
+                picturePath = pathResult;
+              });
+            }
+          }, child: Icon(Icons.camera_alt)),
         );
       }
     );
